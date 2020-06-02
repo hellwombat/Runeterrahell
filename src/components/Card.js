@@ -68,13 +68,6 @@ export default class Card extends Component{
                     </div>
 
                 ))}
-               
-                
-
-                {/* card.assets.fullAbsolutePath */}
-   
-
-
             </div>
             </>
         );
