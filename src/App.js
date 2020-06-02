@@ -17,7 +17,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('https://master.d2o5e084gpzi6j.amplifyapp.com/:8080')
+    fetch('localhost/:8080')
       .then(res => res.json())
       .then(customers => this.setState({customers}));
   
