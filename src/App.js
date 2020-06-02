@@ -17,7 +17,13 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('127.0.0.1:5000/')
+    fetch('127.0.0.1:5000/',{
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+
+    })
       .then(res => res.json())
       .then(customers => this.setState({customers}));
   
