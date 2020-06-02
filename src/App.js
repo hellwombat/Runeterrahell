@@ -36,7 +36,7 @@ class App extends Component {
             )}
             <Login /> 
             {/* <Register /> */}
-            {/* <Card /> */}
+            <Card />
           </div>
         </div>
       </div>
