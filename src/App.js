@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
 import { Login } from "./components/login/Login"
-import Card from './components/Card';
+// import Card from './components/Card';
 // import { Register } from "./components/login/Register"
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       customers: []
     };
@@ -17,16 +17,9 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('127.0.0.1:5000/',{
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-       }
-
-    })
+    fetch('http://localhost:5000/')
       .then(res => res.json())
-      .then(customers => this.setState({customers}));
-  
+      .then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
   }
 
   render() {
@@ -37,12 +30,14 @@ class App extends Component {
           <div className="containerReact">
 
             <nav></nav>
+            <ul>
             {this.state.customers.map(customer => 
-          <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
+              <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
             )}
+            </ul>
             <Login /> 
             {/* <Register /> */}
-            <Card />
+            {/* <Card /> */}
           </div>
         </div>
       </div>
