@@ -1,7 +1,12 @@
 .App {
   text-align: center;
 }
-
+nav{
+  background-color: goldenrod!important;
+}
+.btn{
+  background-color: goldenrod!important;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
