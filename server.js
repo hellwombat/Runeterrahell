@@ -61,7 +61,7 @@ app.get('/register', (req, res) =>{
 })
 //#####################################################
 
-app.listen("8080", err => {
+app.listen("80", err => {
   if(err){console.log.log('server cannot listen');return}
   console.log("server is listning")
 })
