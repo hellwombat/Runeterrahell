@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import { Login } from "./components/login/Login"
-// import Card from './components/Card';
+import Card from './components/Card';
 // import { Register } from "./components/login/Register"
 
 
