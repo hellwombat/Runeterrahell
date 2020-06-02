@@ -17,7 +17,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('http://localhost:80/')
+    fetch('http://localhost:5000/')
       .then(res => res.json())
       .then(customers => this.setState({customers}));
   
