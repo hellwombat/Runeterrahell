@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import Amplify, { Storage } from 'aws-amplify';
-import awsconfig from './aws-exports';
 import './App.css';
 import { Login } from "./components/login/Login"
-import Card from './components/Card';
+// import Card from './components/Card';
 // import { Register } from "./components/login/Register"
 
 
-Amplify.configure(awsconfig);
 class App extends Component {
   constructor() {
     super();
@@ -20,7 +17,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('http://localhost:5000/')
+    fetch('https://localhost:5000/')
       .then(res => res.json())
       .then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
   }
@@ -32,7 +29,7 @@ class App extends Component {
         <div className="login">
           <div className="containerReact">
 
-            <nav><p>his</p></nav>
+            <nav></nav>
             <ul>
             {this.state.customers.map(customer => 
               <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
@@ -40,7 +37,7 @@ class App extends Component {
             </ul>
             <Login /> 
             {/* <Register /> */}
-            <Card />
+            {/* <Card /> */}
           </div>
         </div>
       </div>
