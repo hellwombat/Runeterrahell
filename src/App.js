@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import Amplify, { Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
-Amplify.configure(awsconfig);
 import './App.css';
 import { Login } from "./components/login/Login"
 // import Card from './components/Card';
 // import { Register } from "./components/login/Register"
 
 
+Amplify.configure(awsconfig);
 class App extends Component {
   constructor() {
     super();
