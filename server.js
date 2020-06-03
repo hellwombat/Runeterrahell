@@ -1,5 +1,6 @@
 const express = require("express")
 var mysql      = require('mysql');
+import Amplify, { Storage } from 'aws-amplify';
 
 const app = express()
 
@@ -16,7 +17,7 @@ app.get('/', (req, res) => {
   //   {id: 3, firstName: 'Mary', lastName: 'Swanson'},
   // ];
   
-  // res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*');
   // res.json(customers);
   Storage.put('test.txt', 'Hello')
   .then (result => console.log(result)) // {key: "test.txt"}
