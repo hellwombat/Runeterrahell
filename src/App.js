@@ -32,7 +32,7 @@ class App extends Component {
         <div className="login">
           <div className="containerReact">
 
-            <nav><p>hi</p></nav>
+            <nav><p>his</p></nav>
             <ul>
             {this.state.customers.map(customer => 
               <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
