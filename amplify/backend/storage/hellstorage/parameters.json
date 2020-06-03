@@ -1,5 +1,0 @@
-{
-    "tableName": "hellstorage",
-    "partitionKeyName": "id",
-    "partitionKeyType": "N"
-}

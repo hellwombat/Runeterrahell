@@ -1,8 +1,0 @@
-{
-	"storage": {
-		"hellstorage": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation"
-		}
-	}
-}
