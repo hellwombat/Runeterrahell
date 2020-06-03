@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import Amplify, { Storage } from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 import './App.css';
 import { Login } from "./components/login/Login"
 // import Card from './components/Card';
@@ -17,7 +20,7 @@ class App extends Component {
 
 
   componentDidMount() {
-    fetch('https://localhost:5000/')
+    fetch('http://localhost:5000/')
       .then(res => res.json())
       .then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
   }

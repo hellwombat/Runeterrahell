@@ -1,0 +1,15 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-lorapp-dev-132147-authRole",
+            "UnauthRoleArn": "arn:aws:iam::571159638005:role/amplify-lorapp-dev-132147-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::571159638005:role/amplify-lorapp-dev-132147-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-lorapp-dev-132147-deployment",
+            "UnauthRoleName": "amplify-lorapp-dev-132147-unauthRole",
+            "StackName": "amplify-lorapp-dev-132147",
+            "StackId": "arn:aws:cloudformation:eu-west-1:571159638005:stack/amplify-lorapp-dev-132147/6acd37e0-a58c-11ea-88f9-02ccbabe1234",
+            "AmplifyAppId": "d22pdg97zjrsk5"
+        }
+    }
+}
