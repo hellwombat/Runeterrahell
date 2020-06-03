@@ -3,7 +3,7 @@ import Amplify, { Storage } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import './App.css';
 import { Login } from "./components/login/Login"
-// import Card from './components/Card';
+import Card from './components/Card';
 // import { Register } from "./components/login/Register"
 
 
@@ -40,7 +40,7 @@ class App extends Component {
             </ul>
             <Login /> 
             {/* <Register /> */}
-            {/* <Card /> */}
+            <Card />
           </div>
         </div>
       </div>
