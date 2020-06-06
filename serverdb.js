@@ -8,24 +8,23 @@
 //     password:"K0mpu73r12,", 
 //     // database:"runeterrahell",
 // });
-// host: "localhost", 
-// user: "root",
-// password:"", 
-// database:"holdidayhouses"
-// var mysql      = require('mysql');
-// var connection = mysql.createConnection({
-//   host: "carle.dk", 
-//   user: "carle_dk",
-//   password:"pTWPBy4Y", 
-//   database:"carle_dk",
-//   charset:"utf8mb4"
-// });
-// connection.query('SELECT * FROM houses', function (error, results, fields) {
-//     if (error) throw error;
-//     console.log('The solution is: ', results);
-//   });
-
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  // host: "10.27.22.48", 
+  // database:"cpanelcarle_dk_carle_dk",
+  // user: "cpanelcarle_dk_carle_dk",
+  // password:"pTWPBy4Y", 
+  // charset:"utf8mb4"
+  host: "localhost", 
+  user: "root",
+  password:"", 
+  database:"holdidayhouses"
   
-Storage.put('test.txt', 'Hello')
-    .then (result => console.log(result)) // {key: "test.txt"}
-    .catch(err => console.log(err));
+});
+connection.query('SELECT * FROM houses', function (error, results, fields) {
+    if (error) throw error;
+    // res.json(result)
+    console.log('The solution is: ', results);
+  });
+connection.end()
+  

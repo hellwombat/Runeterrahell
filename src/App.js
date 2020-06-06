@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
-import { Login } from "./components/login/Login"
+// import { Login } from "./components/login/Login"
 // import Card from './components/Card';
-// import { Register } from "./components/login/Register"
+import { Register } from "./components/login/Register"
 
 
 class App extends Component {
@@ -30,13 +30,13 @@ class App extends Component {
           <div className="containerReact">
 
             <nav></nav>
+              {/* <Login />  */}
+              <Register />
             <ul>
             {this.state.customers.map(customer => 
-              <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
+              <li key={customer.id}>{customer.title}</li>
             )}
             </ul>
-            <Login /> 
-            {/* <Register /> */}
             {/* <Card /> */}
           </div>
         </div>
