@@ -3,6 +3,63 @@
 }
 nav{
   background-color: goldenrod!important;
+  padding-right: 125px;
+  padding-left: 125px;
+}
+
+.card{
+  height:300px;
+  overflow: hidden;
+  background-color: khaki;
+}
+.card-image > img{
+  object-fit: cover;
+  width: 100%;
+  height: 150px;
+  
+}.card-image > img:hover {
+  transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+.card-image > div > i {
+background-color: goldenrod;
+right:0px !important;
+}
+.avatar{
+  top: 0px !important;
+}.avatar > img{
+  z-index: 0 !important;
+  object-fit: cover !important;
+  width: auto !important;
+  max-width: 84px !important;
+  height: 100% !important;
+  left:0px !important;
+  top:0px !important;
+  /* right:10px !important; */
+}.avatar > .circle{
+  border-radius: 0px 50px 0px 0px !important;
+}.avatar > p{
+ 
+}
+
+.searchInput{
+  border: 1px solid gray !important;
+  border-radius: 30px !important;
+  padding-left: 20px !important;
+  height: 40px !important;
+  /* width:200px important; */
+}.searchInput:focus{
+  border: 1px solid goldenrod !important;
+  border-bottom: 1px solid goldenrod  !important;
+  -webkit-box-shadow: 0 1px 0 0 goldenrod  !important;
+  -moz-box-shadow: 0 1px 0 0 goldenrod  !important;
+  box-shadow: 0 1px 0 0 goldenrod  !important;
+}.bot{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: goldenrod;
+  padding: 8px;
+  border-radius: 20px 0px 2px;
 }
 .btn{
   background-color: goldenrod!important;
