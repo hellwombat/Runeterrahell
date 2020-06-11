@@ -53,13 +53,24 @@ app.post('/login', (req, res) =>{
     
 
   // Connect to Database and fetch data with  the id^
+  // const knex = Knex({
+  //   client: 'mysql',
+  //   useNullAsDefault: true,
+  //   connection: {
+  //     host: "localhost", 
+  //     user: "root",
+  //     password:"", 
+  //     database:"lor"
+  //   }
+  // });
+
   const knex = Knex({
     client: 'mysql',
     useNullAsDefault: true,
     connection: {
-      host: "localhost", 
-      user: "root",
-      password:"", 
+      host: "runeterra.cluster-chrlobfittza.eu-west-2.rds.amazonaws.com", 
+      user: "Hellwombat",
+      password:"K0mpu73r12,", 
       database:"lor"
     }
   });
@@ -138,13 +149,24 @@ app.post('/register', (req, res) =>{
     
 
   // Connect to Database and fetch data with  the id^
+  // const knex = Knex({
+  //   client: 'mysql',
+  //   useNullAsDefault: true,
+  //   connection: {
+  //     host: "localhost", 
+  //     user: "root",
+  //     password:"", 
+  //     database:"lor"
+  //   }
+  // });
+
   const knex = Knex({
     client: 'mysql',
     useNullAsDefault: true,
     connection: {
-      host: "localhost", 
-      user: "root",
-      password:"", 
+      host: "runeterra.cluster-chrlobfittza.eu-west-2.rds.amazonaws.com", 
+      user: "Hellwombat",
+      password:"K0mpu73r12,", 
       database:"lor"
     }
   });
