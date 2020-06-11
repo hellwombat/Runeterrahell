@@ -15,8 +15,7 @@ app.use(function (req, res, next) {
   //apps/d22pdg97zjrsk5
   // Website you wish to allow to connect
   // res.setHeader('Access-Control-Allow-Origin', '*');
-  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.setHeader('Access-Control-Allow-Origin', 'https://master.d2o5e084gpzi6j.amplifyapp.com/');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE,');
