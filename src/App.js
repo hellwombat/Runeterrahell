@@ -67,24 +67,24 @@ class App extends Component {
   const regLog = this.state.regLog;
 
 
-    if(isLoggedIn === localStorage.jwt){
+    // if(isLoggedIn === localStorage.jwt){
  
-      var renderRegLog = regLog ? <Login setjwt={this.setjwt} isLoggedin={this.state.isLoggedIn}/> : <Register />
-      var renderRegLogText = regLog ? "Register" : "Login"
+    //   var renderRegLog = regLog ? <Login setjwt={this.setjwt} isLoggedin={this.state.isLoggedIn}/> : <Register />
+    //   var renderRegLogText = regLog ? "Register" : "Login"
       
 
-    return (
-      <div className="App">
-        <div className="login">
-          <div className="containerReact">
-            <nav className="right-align"><button onClick={this.RegLogChange} className="btn" >{renderRegLogText}</button></nav>
-              {renderRegLog}
-          </div>
-        </div>
-      </div>
-    );
+    // return (
+    //   <div className="App">
+    //     <div className="login">
+    //       <div className="containerReact">
+    //         <nav className="right-align"><button onClick={this.RegLogChange} className="btn" >{renderRegLogText}</button></nav>
+    //           {renderRegLog}
+    //       </div>
+    //     </div>
+    //   </div>
+    // );
 
-    }else{
+    // }else{
 
 
       return (
@@ -100,7 +100,7 @@ class App extends Component {
           </div>
         </div>
       );
-    }
+    // }
 
 
 
