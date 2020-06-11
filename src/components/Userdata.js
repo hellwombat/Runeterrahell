@@ -40,7 +40,7 @@ export class Userdata extends React.Component {
                 <div className="row">
                     {this.props.deck.map(deck => (
                         <div key={deck.deckName} className="col s6 m4 l3">
-                            <button id={deck.deckName} value={deck.decklist} onClick={(e) => {this.props.loadDeck(e.target.value);this.props.selectCurrentDeck(e.target.id)}} className="btn btn-deck" key={deck.username}>{deck.deckName}</button>
+                            <button id={deck.deckName} value={deck.decklist} onClick={(e) => {this.props.loadDeck(e.target.value);this.props.selectCurrentDeck(e.target.id)}} className="btn btn-deck animate__animated animate__zoomInDown" key={deck.username}>{deck.deckName}</button>
                         </div>
                     ))}
                 </div>

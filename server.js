@@ -3,7 +3,7 @@ const express       = require("express")
 const jsonwebtoken  = require('jsonwebtoken')
 const mysql         = require('mysql');
 const app           = express()
-const Knex = require('knex');
+const Knex        = require('knex');
 
 
 //sets a limit on how much json express will handle
@@ -369,10 +369,12 @@ app.get('/loadDeck', (req, res) =>{
 
 
     
-    const Deck = require("./models/Decks");
+  const Deck = require("./models/Decks");
     
 
     // Connect to Database and fetch data with  the id^
+  
+   
     const knex = Knex({
       client: 'mysql',
       useNullAsDefault: true,
@@ -460,6 +462,52 @@ app.delete('/deleteDeck', (req, res) =>{
 
 
 
+
+
+
+app.get( '/createDB', (req,res) => {
+  console.log("hi")
+
+  const Knex = require('knex');
+  
+  // Initialize knex.
+  const knex = Knex({
+      client: 'mysql',
+      useNullAsDefault: true,
+      connection: {
+        host: "runeterra.cluster-chrlobfittza.eu-west-2.rds.amazonaws.com", 
+        user: "Hellwombat",
+        password:"K0mpu73r12,", 
+        database:"lor"
+      }
+    });
+  
+  
+  
+    knex.raw('CREATE DATABASE lor')
+    .then(async function(){
+      knex.destroy();
+  
+    // Create database schema. You should use knex migration files
+    // to do this. We create it here for simplicity.
+    await knex.schema.createTable('users', table => {
+      table.increments('userID').primary();
+      table.string('username');
+      table.string('password');
+      table.string('profileImage');
+    });
+    await knex.schema.createTable('decks', table => {
+      table.integer('userID');
+      table.string('decklist');
+      table.string('deckName');
+    });
+  
+  
+  });
+  
+
+
+})
 
 
 
