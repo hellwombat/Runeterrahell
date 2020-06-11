@@ -1,8 +1,10 @@
 //required packages
 const express       = require("express")
 const jsonwebtoken  = require('jsonwebtoken')
-var mysql           = require('mysql');
+const mysql         = require('mysql');
 const app           = express()
+const Knex = require('knex');
+
 
 //sets a limit on how much json express will handle
 app.use(express.json({limit:'1mb'}))
@@ -35,31 +37,6 @@ app.use(function (req, res, next) {
 
 
 //###################################################
-//############## THIS IS A TEMPLATE #################
-//###################################################
-//this also shos wether there is a conenction
-//disbale for production
-
-app.get('/', (req, res) => {
-var connection = mysql.createConnection({
-    host: "localhost", 
-    user: "root",
-    password:"", 
-    database:"lor"
-    
-  });
-  connection.query('SELECT * FROM users', function (error, results, fields) {
-      if (error) throw error;
-      res.json(results)
-    });
-connection.end()
-});
-
-
-
-
-
-//###################################################
 //############## LOGIN END POINT ####################
 //###################################################
 
@@ -68,56 +45,72 @@ app.post('/login', (req, res) =>{
   let username = req.body.username
   let  password = req.body.password
   
-  // Connect to database
-  var connection = mysql.createConnection({
-    host: "localhost", 
-    user: "root",
-    password:"", 
-    database:"lor"
-    
-  });
-
-  //define input from the request as an array
-  var user = [username,password]
-
   //tell me the endpoint works
   console.log("i got a request")
 
-  //use the connection to connect
-  connection.connect(function(err) {
-    if (err) throw err;
+//get the model
+  const User = require("./models/Users");
+    
 
-    //tell me you connected
-    console.log("Connected!");
-
-    //define the sql statement
-    var sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-
-    //query the DB
-    connection.query(sql, user, function (err, result) {
-      if (err) {throw err;}
-
-      //tell me if a user was found
-      console.log("found the user");
-
-      //save the users ID for a token
-      userID = result[0].userID;
-
-      //define and deliver token
-      //the token is what defines we are logged in
-      var token = jsonwebtoken.sign({userID:userID, username:req.body.username}, 'Zed') //our secret key should probably be stronger but this ic an remeber for now
-      res.send(token)
-      connection.end()//terminate connection
-    });
+  // Connect to Database and fetch data with  the id^
+  const knex = Knex({
+    client: 'mysql',
+    useNullAsDefault: true,
+    connection: {
+      host: "localhost", 
+      user: "root",
+      password:"", 
+      database:"lor"
+    }
   });
 
+
+  console.log("Connected!");
+  const { Model } = require('objection');
+  Model.knex(knex); // Connect
+
+
+
+  async function loginUser(){
+
+    const queryResponse = await User.query()
+    .select('username', 'userID')
+    .where('username', username)
+    .where('password', password)
+
+    if( queryResponse.length > 0){
+
+
+
+      userID = queryResponse[0].userID
+      var token = jsonwebtoken.sign({userID:userID, username:req.body.username}, 'Zed') //our secret key should probably be stronger but this ic an remeber for now
+
+
+      var message = {
+        "status":1,
+        message:token
+      }
+      res.send(message)
+  
+      
+    }else{
+      message = {
+        "status":0,
+        message:"wrong credentials"
+      }
+      res.json(message)
+    }
+  }
+  loginUser();
+});
+  
   //missing validation
   //  check if user exists 
   //if password correct
 
   // IF Exist and password correct get ID, username (and everything  thatøs not personal) and put it  into the jsonWebToken
   
-})
+
 
 
 
@@ -129,50 +122,74 @@ app.post('/login', (req, res) =>{
 //#####################################################
 app.post('/register', (req, res) =>{
   
-  //define connection
-  var connection = mysql.createConnection({
-    host: "localhost", 
-    user: "root",
-    password:"", 
-    database:"lor"
-    
-  });
 
 
-  //define a new user as na array
-  var newuser = [req.body.username,req.body.password]
+
+  //define a new user
+  const username = req.body.username
+  const password = req.body.password
 
 
   //tell me i hit the endpoint
   console.log("i got a request")
 
+    
+  const User = require("./models/Users");
+    
 
-  //connect
-  connection.connect(function(err) {
-    if (err) throw err;
-
-    //tell me if the connection worked
-    console.log("Connected!");
-
-    //define the sql statement
-    var sql = "INSERT INTO users (username, password) VALUES ( ?, ?)";
-
-    //run it
-    connection.query(sql, newuser, function (err, result) {
-      if (err) throw err;
-
-      //tell me if it worked
-      console.log("1 record inserted");
-      connection.end() //terminate the connection
-    });
+  // Connect to Database and fetch data with  the id^
+  const knex = Knex({
+    client: 'mysql',
+    useNullAsDefault: true,
+    connection: {
+      host: "localhost", 
+      user: "root",
+      password:"", 
+      database:"lor"
+    }
   });
+
+  const { Model } = require('objection');
+  Model.knex(knex); // Connect
+
+
+
+async function registerUser(){
+
+  const queryResponse = await User.query()
+  .select('username')
+  .where('username', username)
+
+
+  if( queryResponse.length > 0){
+
+    message = {message:"user already exist"}
+    res.json(message)
+
+    await knex.destroy()
+
+
+  }else{
+    
+    //register
+    const response = await User.query()
+    .insert({
+      "username":username,
+      "password":password
+    })
+
+
+    message = {message:"user registred"}
+    res.json(message)
+
+    await knex.destroy()
+
+  }
+
+
+}
+registerUser()
 })
-
-
-
-
-
-
 
 
 
@@ -187,7 +204,7 @@ app.get('/fetchData', (req, res) =>{
     let jwt = req.header("Authentication")
 
     // verify with the token
-    jsonwebtoken.verify(jwt, 'Zed', function(err, decoded){
+    jsonwebtoken.verify(jwt, 'Zed',async function(err, decoded){
       if(err || decoded == undefined ){
         console.log('Error in JWT');
         res.status(500).json({"error":"Couldn't verify"});
@@ -197,38 +214,34 @@ app.get('/fetchData', (req, res) =>{
     //get the userID
     let id = decoded.userID
 
+    
+    const User = require("./models/Users");
+    
 
     // Connect to Database and fetch data with  the id^
-    var connection = mysql.createConnection({
-      host: "localhost", 
-      user: "root",
-      password:"", 
-      database:"lor"
-      
+    const knex = Knex({
+      client: 'mysql',
+      useNullAsDefault: true,
+      connection: {
+        host: "localhost", 
+        user: "root",
+        password:"", 
+        database:"lor"
+      }
     });
+ 
+    const { Model } = require('objection');
+    Model.knex(knex); // Connect
 
-    //connect
-    connection.connect(function(err) {
-      if (err) throw err;
 
-      //tell em you connected
-      console.log("fetchuser Connected!");
-
-      //define SQL statement
-      var sql = "SELECT * FROM users WHERE userID = ?";
-
-      //run it
-      connection.query(sql, id, function (err, result) {
-        if (err) throw err;
-
-        //tell me it worked
-        console.log("user fetched");
-
-        // Send data back to the browser
-        res.json(result)
-        connection.end()
-      });
-    });
+    //delete
+    const response = await User.query()
+    .select('*')
+    .where('userID', id)
+    console.log("user loaded")
+    console.log(response)
+    res.json(response)
+    await knex.destroy()
 
 
   })
@@ -252,7 +265,7 @@ app.post('/saveDeck', (req, res) =>{
   let jwt = req.header("Authentication")
 
   // verify it
-  jsonwebtoken.verify(jwt, 'Zed', function(err, decoded){
+  jsonwebtoken.verify(jwt, 'Zed', async function(err, decoded){
     if(err || decoded == undefined){
       console.log('Error in JWT');
       res.status(500).json({"error":"Couldn't verify"});
@@ -263,77 +276,74 @@ app.post('/saveDeck', (req, res) =>{
     let id = decoded.userID
     let deck = req.body.deckCode
     let deckName = req.body.deckName
+
+    //get the model we want to play with
+    const Deck = require("./models/Decks");
     
 
-    //define them as arrays as neeed for the SQL SATEMENTS
-    let decklist = [id, deck, deckName]
-    let deckchek = [id, deckName]
-    let deckUpdate = [deck,id, deckName]
-
-
     // Connect to Database and fetch data with  the id^
-    var connection = mysql.createConnection({
-      host: "localhost", 
-      user: "root",
-      password:"", 
-      database:"lor"
-      
+    const knex = Knex({
+      client: 'mysql',
+      useNullAsDefault: true,
+      connection: {
+        host: "localhost", 
+        user: "root",
+        password:"", 
+        database:"lor"
+      }
     });
-
-
-    // Connect
-    connection.connect(function(err) {
-      if (err) throw err;
+ 
+    const { Model } = require('objection');
+    Model.knex(knex); // Connect
+   
 
       //we want to see if the deck already exists
-      //define the first SQL statement
-      var sql = "SELECT deckName FROM decks WHERE userID = ? AND deckName = ?";
+      const queryResponse = await Deck.query()
+      .select('*')
+      .where('deckName', deckName)
+      .where('userID', id)
 
-      //run it
-      connection.query(sql, deckchek, function (err, result) {
-        if (err) throw err;
-
+     
         //check if the deck already existed or not
-        if (result.length < 1) {
-          if (err) throw err;
-
-          //save the deck if it didnt exist
-          var sql = "INSERT INTO decks (userID, decklist, deckName) VALUES ( ?, ?, ?)";
-          connection.query(sql, decklist, function (err, result) {
-            if (err) throw err;
+        if (queryResponse.length < 1 ) {
+  
+            const response = await Deck.query().insert({
+              userID: id,
+              decklist: deck,
+              deckName: deckName,
+            })
+            
 
             //tell me it saved
             console.log("deck saved");
 
             //return a message WIP
             res.json({message:"deck saved"})
-            connection.end() //end the connection
-          });
+            await knex.destroy()
+
         }else{
+          
+          const response = await Deck.query().patch({
+            userID: id,
+            decklist: deck,
+            deckName: deckName,
+          })
+          .where('deckName', deckName)
+          .where('userID', id)
+          .catch(error => { throw error})
 
-          if (err) throw err;
-
-          //UPDATE AN EXISTING DECK
-          //define the SQL
-          var sql = "UPDATE decks SET decklist = ? WHERE userID = ? AND deckName = ?";
-
-          //run it
-          connection.query(sql, deckUpdate, function (err, result) {
-            if (err) throw err;
-
-            //tell me you updated
-            console.log("deck updated");
-
-            //return a message WIP
-            res.json({message:"deck Updated"})
-            connection.end()//ternminate connection
-       
-          });
+          await knex.destroy()
         }
-      });
-    })
   })
 })
+
+
+
+
+
+
+
+
 // #####################################################
 // ################## LOAD DECKS #######################
 // #####################################################
@@ -345,7 +355,7 @@ app.get('/loadDeck', (req, res) =>{
   console.log(jwt)
 
   // verify it
-  jsonwebtoken.verify(jwt, 'Zed', function(err, decoded){
+  jsonwebtoken.verify(jwt, 'Zed', async function(err, decoded){
     if(err || decoded == undefined){
       console.log('Error in JWT');
       res.status(500).json({"error":"Couldn't verify"});
@@ -355,39 +365,45 @@ app.get('/loadDeck', (req, res) =>{
     //decode the suer id
     let id = decoded.userID
 
+
+
+
+    
+    const Deck = require("./models/Decks");
+    
+
     // Connect to Database and fetch data with  the id^
-    var connection = mysql.createConnection({
-      host: "localhost", 
-      user: "root",
-      password:"", 
-      database:"lor"
-      
+    const knex = Knex({
+      client: 'mysql',
+      useNullAsDefault: true,
+      connection: {
+        host: "localhost", 
+        user: "root",
+        password:"", 
+        database:"lor"
+      }
     });
+ 
+    const { Model } = require('objection');
+    Model.knex(knex); // Connect
 
-    //connect
-    connection.connect(function(err) {
-      if (err) throw err;
 
-      //tell me you connected
-      console.log("Connected!");
+    //delete
+    const response = await Deck.query()
+    .select('*')
+    .where('userID', id)
 
-      //define the SQL
-      var sql = "SELECT * FROM decks WHERE userID = ?";
-
-      //run it
-      connection.query(sql, id, function (err, result) {
-        if (err) throw err;
-
-        //tell em it worked
-        console.log("decks loaded");
-
-        //return the decks
-        res.json(result)
-        connection.end()
-      });
-    });
+    console.log("decks loaded")
+    res.json(response)
+    await knex.destroy()
   })
 })
+
+
+
+
+
+
 
 // #####################################################
 // ############### DELETE A DECK #######################
@@ -398,7 +414,7 @@ app.delete('/deleteDeck', (req, res) =>{
   console.log(jwt)
 
   // verify the token
-  jsonwebtoken.verify(jwt, 'Zed', function(err, decoded){
+  jsonwebtoken.verify(jwt, 'Zed', async function(err, decoded){
     if(err || decoded == undefined){
       console.log('Error in JWT');
       res.status(500).json({"error":"Couldn't verify"});
@@ -408,40 +424,35 @@ app.delete('/deleteDeck', (req, res) =>{
     //define the deck and who owns it
     let id = decoded.userID
     let deckName = req.body.deckToBeDeleted
-    const deleteDeck = [id, deckName]
-
 
 
     // Connect to Database and fetch data with  the id^
-    var connection = mysql.createConnection({
-      host: "localhost", 
-      user: "root",
-      password:"", 
-      database:"lor"
-      
+    const Deck = require("./models/Decks");
+    
+
+    // Connect to Database and fetch data with  the id^
+    const knex = Knex({
+      client: 'mysql',
+      useNullAsDefault: true,
+      connection: {
+        host: "localhost", 
+        user: "root",
+        password:"", 
+        database:"lor"
+      }
     });
+ 
+    const { Model } = require('objection');
+    Model.knex(knex); // Connect
 
 
-    //connect
-    connection.connect(function(err) {
-      if (err) throw err;
-
-      //tell em ti worked
-      console.log("Connected!");
-
-      //define sql
-      var sql = "DELETE FROM decks WHERE userID = ? AND deckName = ?";
-
-      //run it
-      connection.query(sql, deleteDeck, function (err, result) {
-        if (err) throw err;
-
-        //tell em it worked
-        console.log("deck deleted");
-        res.json(result)//we dont need this
-        connection.end()//end the connection
-      });
-    });
+    //delete
+    const response = await Deck.query()
+    .delete()
+    .where('deckName', deckName)
+    .where('userID', id)
+    console.log("deck deleted")
+    await knex.destroy()
   })
 })
 

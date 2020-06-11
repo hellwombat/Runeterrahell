@@ -8,7 +8,11 @@ export default class Dashboard extends Component{
     
     constructor(props){
         super(props);
-        this.pickCard = this.pickCard.bind(this);
+        // this.pickCard = this.pickCard.bind(this)
+        this.props = {
+            currentDeck : ''
+        }
+       
     }
       
     state = {
@@ -73,6 +77,7 @@ export default class Dashboard extends Component{
             }
         }
     }
+
 
 
 
@@ -182,6 +187,7 @@ export default class Dashboard extends Component{
     //this searches the database for all deck by the useres ID
     //this is lifted from the user data component
     getUsersDecks = async (event) => {
+        console.log("i hear you")
         fetch('http://localhost:5000/loadDeck', {
             headers:{
                 "Authentication":localStorage.jwt,
@@ -269,7 +275,7 @@ export default class Dashboard extends Component{
 
                     <div className="col s4">
                         <h4>Your deck</h4>
-                        <Deck selectCurrentDeck={this.selectCurrentDeck} deck={this.state.selectedCards} currentDeck={this.state.currentDeck}/>
+                        <Deck getUsersDecks={this.getUsersDecks} selectCurrentDeck={this.selectCurrentDeck} deck={this.state.selectedCards} currentDeck={this.state.currentDeck}/>
                     </div>
 
                 </div>

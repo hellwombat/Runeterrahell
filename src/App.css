@@ -40,6 +40,11 @@ right:0px !important;
 }.avatar > p{
  
 }
+.btn-deck{
+  width:100%;
+  margin-bottom:17px;
+  overflow: hidden;
+}
 
 .searchInput{
   border: 1px solid gray !important;
@@ -90,6 +95,7 @@ right:0px !important;
   color: #61dafb;
 }
 
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -98,3 +104,30 @@ right:0px !important;
     transform: rotate(360deg);
   }
 }
+
+.speech-bubble {
+	position: relative;
+	background: #dfc877;
+  border-radius: .4em;
+  font-size: large;
+  padding: 10px;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 15px solid transparent;
+	border-right-color: #dfc877;
+	border-left: 0;
+	border-bottom: 0;
+	margin-top: -7.5px;
+	margin-left: -15px;
+}
+
+
+
+

@@ -10,6 +10,7 @@ export class Login extends React.Component {
         this.state = {
           username: '',
           password: '',
+          message:'ss'
         };
     }
 
@@ -27,10 +28,19 @@ export class Login extends React.Component {
         },
             body: JSON.stringify({"username":username,"password":password})
         })
+        //message display
+        let reply = await connection.text()
+        let jResponse= JSON.parse(reply)
+        if(jResponse.status == 1){
 
+            console.log(jResponse.message)
+            this.props.setjwt(jResponse.message)
+        }else{
+            
+            this.setState({message:jResponse.message})
+        }
+     
        //should use state to send error messages to user
-        let response = await connection.text();
-        this.props.setjwt(response)
     };
 
     //set the state to the user input
@@ -62,7 +72,7 @@ export class Login extends React.Component {
                         <label htmlFor="Password"></label>
                         <input type="text" name="password" placeholder="Password" onChange={this.onChange} value={password}></input>
                     </div>
-
+                    {this.state.message}
                     <div className="footer">
                         <button className="btn" >Login</button>
                     </div>

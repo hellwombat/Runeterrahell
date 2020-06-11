@@ -22,8 +22,8 @@ class App extends Component {
 
 
 
-//set the web token
-//lifted from login component
+  //set the web token
+  //lifted from login component
   setjwt = async (response) => {
 
     localStorage.jwt = response

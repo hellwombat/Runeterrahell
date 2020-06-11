@@ -19,9 +19,6 @@ export class Userdata extends React.Component {
             }
 
         })
-        // .then(  this.setState({username:data}))
-        //   .then(res => console.log(res.json()))
-        //   .then(console.log(res.json()))
         .then(res => res.json())
         .then(user => this.setState({user:user}, () => console.log('data fetched', user)))
     }
@@ -42,8 +39,8 @@ export class Userdata extends React.Component {
 
                 <div className="row">
                     {this.props.deck.map(deck => (
-                        <div key={deck.deckName} className="col s3">
-                            <button id={deck.deckName} value={deck.decklist} onClick={(e) => {this.props.loadDeck(e.target.value);this.props.selectCurrentDeck(e.target.id)}} className="btn" key={deck.username}>{deck.deckName}</button>
+                        <div key={deck.deckName} className="col s6 m4 l3">
+                            <button id={deck.deckName} value={deck.decklist} onClick={(e) => {this.props.loadDeck(e.target.value);this.props.selectCurrentDeck(e.target.id)}} className="btn btn-deck" key={deck.username}>{deck.deckName}</button>
                         </div>
                     ))}
                 </div>

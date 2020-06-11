@@ -12,6 +12,7 @@ export class Register extends React.Component {
         this.state = {
           username: '',
           password: '',
+          message:'aa'
         };
     }
 
@@ -35,15 +36,18 @@ export class Register extends React.Component {
 
         console.log(username)
         console.log(password)
-            await fetch('http://localhost:5000/register', {
+            let connection = await fetch('http://localhost:5000/register', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
         },
             body: JSON.stringify({"username":username,"password":password})
-        })
-         //should use state to send error messages to user
 
+        })
+        let response = await connection.text()
+        let jResponse= JSON.parse(response)
+        this.setState({message:jResponse.message})
+     
          
     };
 
@@ -75,7 +79,7 @@ export class Register extends React.Component {
                         <input type="text" id="password" name="password" placeholder="Password" onChange={this.onChange} value={password}></input>
                     </div>
 
-
+                    {this.state.message}
                     <div className="footer">
                         <button  className="btn waves-effect waves-light" >Register</button>
                     </div>

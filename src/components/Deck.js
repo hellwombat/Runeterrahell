@@ -1,6 +1,7 @@
 import React from 'react';
 
 export class Deck extends React.Component {
+    
     constructor(props) {
         super(props);
 
@@ -45,7 +46,9 @@ export class Deck extends React.Component {
         })
         .then(res => res.json)
         .then(this.setState({message:"deck saved"}))
+        .then(console.log(this.state.deckName))
         .then(this.props.selectCurrentDeck(this.state.deckName))
+        .then(this.props.getUsersDecks())
     }
 
 
@@ -60,6 +63,7 @@ export class Deck extends React.Component {
             },
             body: JSON.stringify({ "deckToBeDeleted":deckName})
         })
+        .then(this.props.getUsersDecks())
     }
     
     //the render method
@@ -100,10 +104,16 @@ export class Deck extends React.Component {
 
             </ul>
 
+            <div className="row">
 
-            <button className="btn" onClick={() => {this.genrateDeckCode(this.props)}}>save deck</button>
-            <button className="btn" onClick={(e) => {this.deleteDeck(currentDeck)}}>delete deck</button>
+                <div className="col s12 m6">
+                    <button className="btn btn-deck" onClick={() => {this.genrateDeckCode(this.props)}}>save deck</button>
+                </div>
+                <div className="col s12 m6">
+                    <button className="btn btn-deck" onClick={(e) => {this.deleteDeck(currentDeck)}}>delete deck</button>
+                </div>
 
+            </div>
 
         </>
     )}
